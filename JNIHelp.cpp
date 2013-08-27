@@ -72,11 +72,6 @@ extern "C" int jniRegisterNativeMethods(C_JNIEnv* env, const char* className,
 
     scoped_local_ref<jclass> c(env, findClass(env, className));
     if (c.get() == NULL) {
-        /* Allow exception to be handled by app in case when class is already in CLASS_ERROR state */
-        if ((*env)->ExceptionCheck(e)) {
-            return -1;
-        }
-
         ALOGE("Native registration unable to find class '%s', aborting", className);
         abort();
     }
