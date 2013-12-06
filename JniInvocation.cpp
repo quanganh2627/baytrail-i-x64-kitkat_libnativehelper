@@ -64,7 +64,9 @@ bool JniInvocation::Init(const char* library) {
     library = default_library;
   }
 
-  handle_ = dlopen(library, RTLD_NOW);
+  // Because we use dlopen to load different user plugins in dalvik,
+  // we need to allow libdvm.so symbols to be accessible globally
+  handle_ = dlopen(library, RTLD_NOW | RTLD_GLOBAL);
   if (handle_ == NULL) {
     if (strcmp(library, kLibraryFallback) == 0) {
       // Nothing else to try.
